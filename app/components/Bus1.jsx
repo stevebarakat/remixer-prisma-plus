@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Destination } from "tone";
 import VuMeter from "./VuMeter";
-import { scale } from "~/utils/scale";
+import { scale, dBToPercent } from "~/utils/scale";
 
 function Bus1({
   state,
@@ -9,34 +9,38 @@ function Bus1({
   handleSetBusOneFxOneChoice,
   handleSetBusOneFxTwoChoice,
   busOneActive,
+  busOneMeter,
 }) {
   const requestRef = useRef();
   const [masterMeterVal, setMasterMeterVal] = useState(-12);
-  const [masterVol, setMasterVol] = useState(0.5);
+  const [masterVol, setMasterVol] = useState(0);
+  if (busOneChannel !== null) {
+    busOneChannel.connect(busOneMeter);
+  }
 
   function changeMasterVolume(e) {
     const value = parseFloat(e.target.value);
-    // const v = Math.log(value + 61) / Math.log(67);
-    // const sv = scale(v, 0, 1, -60, 6);
-    setMasterVol(value);
+    const v = value;
+    const sv = scale(v, 0, 1, -100, 12);
+    setMasterVol(sv);
     busOneChannel.set({ gain: value });
   }
 
-  // const animateMeter = useCallback(() => {
-  //   setMasterMeterVal(masterMeter.getValue() + 85);
-  //   requestRef.current = requestAnimationFrame(animateMeter);
-  // }, [masterMeter]);
+  const animateMeter = useCallback(() => {
+    setMasterMeterVal(busOneMeter.getValue() + 85);
+    requestRef.current = requestAnimationFrame(animateMeter);
+  }, [busOneMeter]);
 
-  // useEffect(() => {
-  //   if (state === "started") {
-  //     requestAnimationFrame(animateMeter);
-  //   } else {
-  //     return () => {
-  //       cancelAnimationFrame(requestRef.current);
-  //     };
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [state]);
+  useEffect(() => {
+    if (state === "started") {
+      requestAnimationFrame(animateMeter);
+    } else {
+      return () => {
+        cancelAnimationFrame(requestRef.current);
+      };
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state]);
 
   return (
     <div>
@@ -97,7 +101,7 @@ function Bus1({
             type="range"
             min={0}
             max={1}
-            defaultValue={0.5}
+            defaultValue={0.71}
             step="0.000001"
             onChange={changeMasterVolume}
           />

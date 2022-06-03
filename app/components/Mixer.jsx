@@ -30,6 +30,7 @@ function Mixer({ song }) {
   const eqs = useRef([]);
   const meters = useRef([]);
   const masterMeter = useRef(null);
+  const busOneMeter = useRef(null);
   const busOneChannel = useRef(null);
   const [meterVals, setMeterVals] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -62,6 +63,7 @@ function Mixer({ song }) {
   useEffect(() => {
     // create audio nodes
     masterMeter.current = new Meter();
+    busOneMeter.current = new Meter();
 
     for (let i = 0; i < tracks.length; i++) {
       channels.current.push(
@@ -87,6 +89,8 @@ function Mixer({ song }) {
         meters.current[i].dispose();
         eqs.current[i].dispose();
         channels.current[i].dispose();
+        busOneMeter.current.dispose();
+        masterMeter.current.dispose();
       });
       players.current = [];
       meters.current = [];
@@ -313,10 +317,12 @@ function Mixer({ song }) {
           );
         })}
         <Bus1
+          state={state}
           busOneActive={busOneActive}
           busOneChannel={busOneChannel.current}
           handleSetBusOneFxOneChoice={handleSetBusOneFxOneChoice}
           handleSetBusOneFxTwoChoice={handleSetBusOneFxTwoChoice}
+          busOneMeter={busOneMeter.current}
         />
         <MasterVol state={state} masterMeter={masterMeter.current} />
       </div>
