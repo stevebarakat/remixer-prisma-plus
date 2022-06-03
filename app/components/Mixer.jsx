@@ -189,7 +189,7 @@ function Mixer({ song }) {
       setBusOneActive(temp.find((item) => item === true));
       console.log(
         "find",
-        temp.filter((item) => item === true)
+        temp.find((item) => item === true)
       );
       if (i === id) {
         if (e.target.checked) {
