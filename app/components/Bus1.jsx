@@ -6,7 +6,7 @@ import { scale } from "~/utils/scale";
 function Bus1({ state, busOneChannel, handleSetFxOneChoice, busOneActive }) {
   const requestRef = useRef();
   const [masterMeterVal, setMasterMeterVal] = useState(-12);
-  const [masterVol, setMasterVol] = useState(0);
+  const [masterVol, setMasterVol] = useState(0.5);
 
   function changeMasterVolume(e) {
     const value = parseFloat(e.target.value);
@@ -34,7 +34,7 @@ function Bus1({ state, busOneChannel, handleSetFxOneChoice, busOneActive }) {
 
   return (
     <div>
-      {busOneActive ? (
+      {busOneActive === true ? (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <select
             onChange={(e) => handleSetFxOneChoice(e.target.value)}

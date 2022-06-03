@@ -39,6 +39,7 @@ function Mixer({ song }) {
   const [state, setState] = useState("stopped");
   const handleSetState = (value) => setState(value);
   const [busOneActive, setBusOneActive] = useState(false);
+  const [temp, setTemp] = useState([false, false, false, false]);
 
   // console.log("fxOneChoice", fxOneChoice);
   // console.log("fxOneType", fxOneType);
@@ -182,7 +183,14 @@ function Mixer({ song }) {
     const id = parseInt(e.target.id.toString()[0], 10);
     for (let i = 0; i < tracks.length; i++) {
       console.log(e.target.checked);
-      setBusOneActive(e.target.checked);
+      temp[id] = e.target.checked;
+      setTemp(temp);
+      console.log("temp", temp);
+      setBusOneActive(temp.find((item) => item === true));
+      console.log(
+        "find",
+        temp.filter((item) => item === true)
+      );
       if (i === id) {
         if (e.target.checked) {
           busOneChannel.current = new Gain({ gain: 0 }).toDestination();
