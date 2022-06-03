@@ -88,7 +88,7 @@ function VuMeter({ meterValue, height, width }) {
     requestAnimationFrame(draw);
 
     return () => cancelAnimationFrame(drawRef.current);
-  }, []);
+  }, [width, height, boxHeight, boxGapY, boxGapX, getBoxColor, boxWidth]);
 
   useEffect(() => {
     stage.current.dataset.volume = meterValue;
