@@ -58,8 +58,8 @@ function MasterVol({ state, masterMeter }) {
           type="range"
           min={-100}
           max={12}
-          defaultValue={-20}
-          step="1"
+          defaultValue={-32}
+          step="0.1"
           onChange={changeMasterVolume}
         />
       </div>

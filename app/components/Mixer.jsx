@@ -67,7 +67,7 @@ function Mixer({ song }) {
 
     for (let i = 0; i < tracks.length; i++) {
       channels.current.push(
-        new Channel(tracks[i].volume, tracks[i].pan).toDestination()
+        new Channel(tracks[i].volume || -32, tracks[i].pan).toDestination()
       );
       players.current.push(new Player(tracks[i].path));
       eqs.current.push(new EQ3());
@@ -266,7 +266,7 @@ function Mixer({ song }) {
       );
       if (i === id) {
         if (e.target.checked) {
-          busOneChannel.current = new Gain({ gain: 0 }).toDestination();
+          busOneChannel.current = new Volume({ volume: -32 }).toDestination();
           channels.current[i].connect(busOneChannel.current);
         } else {
           busOneChannel.current.dispose();

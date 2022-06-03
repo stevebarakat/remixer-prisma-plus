@@ -19,17 +19,19 @@ function Bus1({
   }
 
   function changeMasterVolume(e) {
-    const value = parseFloat(e.target.value);
-    const v = value;
-    const sv = scale(v, 0, 1, -100, 12);
-    setMasterVol(sv);
-    busOneChannel.set({ gain: value });
+    if (!busOneActive) return;
+    const value = parseInt(e.target.value, 10);
+    const v = Math.log(value + 101) / Math.log(113);
+    const sv = dBToPercent(v);
+    setMasterVol(Math.round(sv));
+    busOneChannel.set({ volume: value });
   }
 
   const animateMeter = useCallback(() => {
+    if (!busOneActive) return;
     setMasterMeterVal(busOneMeter.getValue() + 85);
     requestRef.current = requestAnimationFrame(animateMeter);
-  }, [busOneMeter]);
+  }, [busOneMeter, busOneActive]);
 
   useEffect(() => {
     if (state === "started") {
@@ -99,10 +101,10 @@ function Bus1({
           <input
             className="master-volume"
             type="range"
-            min={0}
-            max={1}
-            defaultValue={0.71}
-            step="0.000001"
+            min={-100}
+            max={12}
+            defaultValue={-32}
+            step="0.1"
             onChange={changeMasterVolume}
           />
         </div>
