@@ -33,19 +33,19 @@ function Mixer({ song }) {
   const busOneChannel = useRef(null);
   const [meterVals, setMeterVals] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [fxOneType, setFxOneType] = useState(null);
-  const [fxOneChoice, setFxOneChoice] = useState(null);
-  const handleSetFxOneChoice = (value) => setFxOneChoice(value);
-  const [fxTwoType, setFxTwoType] = useState(null);
-  const [fxTwoChoice, setFxTwoChoice] = useState(null);
-  const handleSetFxTwoChoice = (value) => setFxTwoChoice(value);
+  const [busOneFxOneType, setBusOneFxOneType] = useState(null);
+  const [busOneFxOneChoice, setBusOneFxOneChoice] = useState(null);
+  const handleSetBusOneFxOneChoice = (value) => setBusOneFxOneChoice(value);
+  const [busOneFxTwoType, setBusOneFxTwoType] = useState(null);
+  const [busOneFxTwoChoice, setBusOneFxTwoChoice] = useState(null);
+  const handleSetBusOneFxTwoChoice = (value) => setBusOneFxTwoChoice(value);
   const [state, setState] = useState("stopped");
   const handleSetState = (value) => setState(value);
   const [busOneActive, setBusOneActive] = useState(false);
   const [temp, setTemp] = useState([false, false, false, false]);
 
-  // console.log("fxOneChoice", fxOneChoice);
-  // console.log("fxOneType", fxOneType);
+  // console.log("busOneFxOneChoice", busOneFxOneChoice);
+  // console.log("busOneFxOneType", busOneFxOneType);
 
   t.set({ bpm: 92 });
   // make sure song stops at end
@@ -116,17 +116,17 @@ function Mixer({ song }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
 
-  // when fxOneChoice is selected it initiates new FX
+  // when busOneFxOneChoice is selected it initiates new FX
   useEffect(() => {
-    switch (fxOneChoice) {
+    switch (busOneFxOneChoice) {
       case "FX1":
-        setFxOneType(null);
+        setBusOneFxOneType(null);
         break;
       case "reverb":
-        setFxOneType(new Reverb({ decay: 3, wet: 1 }).toDestination());
+        setBusOneFxOneType(new Reverb({ decay: 3, wet: 1 }).toDestination());
         break;
       case "delay":
-        setFxOneType(
+        setBusOneFxOneType(
           new FeedbackDelay({
             delayTime: "1n",
             wet: 1,
@@ -134,7 +134,7 @@ function Mixer({ song }) {
         );
         break;
       case "chours":
-        setFxOneType(
+        setBusOneFxOneType(
           new Chorus({
             frequency: 4,
             delayTime: 2.5,
@@ -144,7 +144,7 @@ function Mixer({ song }) {
         );
         break;
       case "phaser":
-        setFxOneType(
+        setBusOneFxOneType(
           new Phaser({
             wet: 1,
             frequency: 15,
@@ -154,7 +154,7 @@ function Mixer({ song }) {
         );
         break;
       case "pitch-shift":
-        setFxOneType(
+        setBusOneFxOneType(
           new PitchShift({
             pitch: 24,
             wet: 1,
@@ -162,7 +162,7 @@ function Mixer({ song }) {
         );
         break;
       case "distortion":
-        setFxOneType(
+        setBusOneFxOneType(
           new Distortion({
             distortion: 8,
             wet: 1,
@@ -172,19 +172,19 @@ function Mixer({ song }) {
       default:
         break;
     }
-  }, [fxOneChoice]);
+  }, [busOneFxOneChoice]);
 
-  // when fxTwoChoice is selected it initiates new FX
+  // when busOneFxTwoChoice is selected it initiates new FX
   useEffect(() => {
-    switch (fxTwoChoice) {
+    switch (busOneFxTwoChoice) {
       case "FX2":
-        setFxTwoType(null);
+        setBusOneFxTwoType(null);
         break;
       case "reverb":
-        setFxTwoType(new Reverb({ decay: 3, wet: 1 }).toDestination());
+        setBusOneFxTwoType(new Reverb({ decay: 3, wet: 1 }).toDestination());
         break;
       case "delay":
-        setFxTwoType(
+        setBusOneFxTwoType(
           new FeedbackDelay({
             delayTime: "1n",
             wet: 1,
@@ -192,7 +192,7 @@ function Mixer({ song }) {
         );
         break;
       case "chours":
-        setFxTwoType(
+        setBusOneFxTwoType(
           new Chorus({
             frequency: 4,
             delayTime: 2.5,
@@ -202,7 +202,7 @@ function Mixer({ song }) {
         );
         break;
       case "phaser":
-        setFxTwoType(
+        setBusOneFxTwoType(
           new Phaser({
             wet: 1,
             frequency: 15,
@@ -212,7 +212,7 @@ function Mixer({ song }) {
         );
         break;
       case "pitch-shift":
-        setFxTwoType(
+        setBusOneFxTwoType(
           new PitchShift({
             pitch: 24,
             wet: 1,
@@ -220,7 +220,7 @@ function Mixer({ song }) {
         );
         break;
       case "distortion":
-        setFxTwoType(
+        setBusOneFxTwoType(
           new Distortion({
             distortion: 8,
             wet: 1,
@@ -230,23 +230,23 @@ function Mixer({ song }) {
       default:
         break;
     }
-  }, [fxTwoChoice]);
+  }, [busOneFxTwoChoice]);
 
   useEffect(() => {
-    if (fxOneChoice === "FX1") fxOneType.dispose();
-    if (fxOneType === null || busOneChannel.current === null) return;
-    console.log("fxOneType", fxOneType);
-    busOneChannel.current.connect(fxOneType);
-    return () => fxOneType.dispose();
-  }, [fxOneType, fxOneChoice]);
+    if (busOneFxOneChoice === "FX1") busOneFxOneType.dispose();
+    if (busOneFxOneType === null || busOneChannel.current === null) return;
+    console.log("busOneFxOneType", busOneFxOneType);
+    busOneChannel.current.connect(busOneFxOneType);
+    return () => busOneFxOneType.dispose();
+  }, [busOneFxOneType, busOneFxOneChoice]);
 
   useEffect(() => {
-    if (fxTwoChoice === "FX2") fxTwoType.dispose();
-    if (fxTwoType === null || busOneChannel.current === null) return;
-    console.log("fxTwoType", fxTwoType);
-    busOneChannel.current.connect(fxTwoType);
-    return () => fxTwoType.dispose();
-  }, [fxTwoType, fxTwoChoice]);
+    if (busOneFxTwoChoice === "FX2") busOneFxTwoType.dispose();
+    if (busOneFxTwoType === null || busOneChannel.current === null) return;
+    console.log("busOneFxTwoType", busOneFxTwoType);
+    busOneChannel.current.connect(busOneFxTwoType);
+    return () => busOneFxTwoType.dispose();
+  }, [busOneFxTwoType, busOneFxTwoChoice]);
 
   function toggleBusOne(e) {
     const id = parseInt(e.target.id.toString()[0], 10);
@@ -315,8 +315,8 @@ function Mixer({ song }) {
         <Bus1
           busOneActive={busOneActive}
           busOneChannel={busOneChannel.current}
-          handleSetFxOneChoice={handleSetFxOneChoice}
-          handleSetFxTwoChoice={handleSetFxTwoChoice}
+          handleSetBusOneFxOneChoice={handleSetBusOneFxOneChoice}
+          handleSetBusOneFxTwoChoice={handleSetBusOneFxTwoChoice}
         />
         <MasterVol state={state} masterMeter={masterMeter.current} />
       </div>

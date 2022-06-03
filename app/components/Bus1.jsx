@@ -6,8 +6,8 @@ import { scale } from "~/utils/scale";
 function Bus1({
   state,
   busOneChannel,
-  handleSetFxOneChoice,
-  handleSetFxTwoChoice,
+  handleSetBusOneFxOneChoice,
+  handleSetBusOneFxTwoChoice,
   busOneActive,
 }) {
   const requestRef = useRef();
@@ -44,7 +44,7 @@ function Bus1({
         <>
           <div style={{ display: "flex", flexDirection: "column" }}>
             <select
-              onChange={(e) => handleSetFxOneChoice(e.target.value)}
+              onChange={(e) => handleSetBusOneFxOneChoice(e.target.value)}
               className="effect-select"
             >
               <option value="fx1">FX1</option>
@@ -58,7 +58,7 @@ function Bus1({
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
             <select
-              onChange={(e) => handleSetFxTwoChoice(e.target.value)}
+              onChange={(e) => handleSetBusOneFxTwoChoice(e.target.value)}
               className="effect-select"
             >
               <option value="fx1">FX2</option>
