@@ -14,6 +14,7 @@ function Play({ state, handleSetState, song }) {
   }
 
   function startSong() {
+    console.log("clicked");
     if (state === "started") {
       t.pause();
       handleSetState("paused");

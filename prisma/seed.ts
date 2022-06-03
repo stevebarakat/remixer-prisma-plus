@@ -22,7 +22,7 @@ async function seed() {
       location: "Leatherhead, Surrey, U.K.",
       bpm: 128,
       start: 0,
-      end: 0,
+      end: 180,
     },
   });
 

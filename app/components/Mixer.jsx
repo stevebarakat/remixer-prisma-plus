@@ -40,7 +40,7 @@ function Mixer({ song }) {
   const handleSetState = (value) => setState(value);
   const [busOneActive, setBusOneActive] = useState(false);
 
-  console.log("fxOneChoice", fxOneChoice);
+  // console.log("fxOneChoice", fxOneChoice);
   // console.log("fxOneType", fxOneType);
 
   t.set({ bpm: 92 });
