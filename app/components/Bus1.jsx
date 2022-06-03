@@ -28,12 +28,15 @@ function Bus1({
   }
 
   const animateMeter = useCallback(() => {
-    if (!busOneActive) return;
     setMasterMeterVal(busOneMeter.getValue() + 85);
     requestRef.current = requestAnimationFrame(animateMeter);
-  }, [busOneMeter, busOneActive]);
+  }, [busOneMeter]);
 
   useEffect(() => {
+    if (!busOneActive) {
+      setMasterMeterVal(-112);
+      return cancelAnimationFrame(requestRef.current);
+    }
     if (state === "started") {
       requestAnimationFrame(animateMeter);
     } else {
@@ -42,7 +45,7 @@ function Bus1({
       };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state]);
+  }, [state, busOneActive]);
 
   return (
     <div>

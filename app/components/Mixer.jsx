@@ -67,7 +67,7 @@ function Mixer({ song }) {
 
     for (let i = 0; i < tracks.length; i++) {
       channels.current.push(
-        new Channel(tracks[i].volume || -32, tracks[i].pan).toDestination()
+        new Channel(tracks[i].volume, tracks[i].pan).toDestination()
       );
       players.current.push(new Player(tracks[i].path));
       eqs.current.push(new EQ3());
@@ -114,7 +114,7 @@ function Mixer({ song }) {
 
   // triggers animateMeter
   useEffect(() => {
-    if (state !== "started") return;
+    // if (state !== "started") return;
     requestAnimationFrame(animateMeter);
     return () => cancelAnimationFrame(requestRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
